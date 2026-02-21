@@ -1,0 +1,11 @@
+build/
+dist/
+*.zip
+*.spec
+*.pdf
+__pycache__/
+.claude/
+EIA Track.app
+build_mac.sh
+build_windows.bat
+.DS_Store
