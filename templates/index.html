@@ -15,7 +15,7 @@
             --gold-hover: #cdb06a;
             --gold-pale: #f5f0e4;
             --gold-faint: #faf6ed;
-            --bg: #f9f8f6;
+            --bg: #f0eeea;
             --bg2: #f3f1ed;
             --white: #ffffff;
             --border: #e0dcd5;
@@ -28,17 +28,20 @@
             --green-bg: #e8f5ee;
             --red: #a31515;
             --red-bg: #fef2f2;
-            --radius: 6px;
-            --radius-lg: 10px;
-            --shadow: 0 1px 3px rgba(10,22,40,0.04), 0 1px 2px rgba(10,22,40,0.02);
-            --shadow-md: 0 4px 12px rgba(10,22,40,0.06);
-            --shadow-focus: 0 0 0 3px var(--gold-pale);
-            --transition: 150ms ease;
+            --radius: 8px;
+            --radius-lg: 14px;
+            --shadow: 0 1px 3px rgba(10,22,40,0.06), 0 1px 2px rgba(10,22,40,0.04);
+            --shadow-md: 0 4px 16px rgba(10,22,40,0.08);
+            --shadow-lg: 0 8px 30px rgba(10,22,40,0.1);
+            --shadow-focus: 0 0 0 3px rgba(184,150,62,0.2);
+            --glass-bg: rgba(255,255,255,0.72);
+            --glass-border: rgba(255,255,255,0.4);
+            --transition: 180ms ease;
         }
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
+            background: linear-gradient(145deg, #e8e5df 0%, #f0eeea 40%, #ede9e3 100%);
             color: var(--text);
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
@@ -46,40 +49,65 @@
         }
 
         /* ── HEADER ─────────────────────────────────────── */
-        .masthead { background: var(--navy); border-bottom: 2.5px solid var(--gold); }
+        .masthead {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 50%, var(--navy-light) 100%);
+            border-bottom: 3px solid var(--gold);
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 4px 20px rgba(10,22,40,0.25);
+        }
         .masthead-inner {
-            max-width: 960px; margin: 0 auto; padding: 16px 28px;
+            max-width: 1040px; margin: 0 auto; padding: 14px 32px;
             display: flex; align-items: center; justify-content: space-between;
         }
         .masthead-left { display: flex; align-items: center; gap: 16px; }
-        .masthead img { height: 36px; border-radius: 3px; }
-        .masthead-brand { font-size: 16px; font-weight: 700; color: var(--white); letter-spacing: -0.3px; }
-        .masthead-sub {
-            font-size: 9px; font-weight: 500; color: var(--gold);
-            letter-spacing: 2px; text-transform: uppercase; margin-top: 1px;
+        .masthead img { height: 38px; border-radius: 4px; }
+        .masthead-brand {
+            font-size: 17px; font-weight: 800; color: var(--white);
+            letter-spacing: -0.3px;
         }
-        .masthead-right { font-size: 11px; color: rgba(255,255,255,.35); font-weight: 400; }
+        .masthead-sub {
+            font-size: 9px; font-weight: 600; color: var(--gold);
+            letter-spacing: 2.5px; text-transform: uppercase; margin-top: 1px;
+        }
+        .masthead-right { font-size: 11px; color: rgba(255,255,255,.4); font-weight: 400; }
 
         /* ── LAYOUT ─────────────────────────────────────── */
-        .page { max-width: 960px; margin: 0 auto; padding: 28px 28px 80px; }
+        .page { max-width: 1040px; margin: 0 auto; padding: 32px 32px 80px; }
 
         /* ── PANEL ──────────────────────────────────────── */
         .panel {
-            background: var(--white); border: 1px solid var(--border);
-            border-radius: var(--radius-lg); padding: 28px 32px;
-            margin-bottom: 20px; box-shadow: var(--shadow);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg); padding: 30px 36px;
+            margin-bottom: 22px;
+            box-shadow: var(--shadow-md);
+            opacity: 0; animation: slideUp 0.5s ease-out forwards;
         }
+        .panel:nth-child(1) { animation-delay: 0s; }
+        .panel:nth-child(2) { animation-delay: 0.08s; }
+        .panel:nth-child(3) { animation-delay: 0.16s; }
+        .panel:nth-child(4) { animation-delay: 0.24s; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .panel-overline {
-            font-size: 9px; font-weight: 700; letter-spacing: 2.5px;
-            text-transform: uppercase; color: var(--gold); margin-bottom: 4px;
+            display: inline-block;
+            font-size: 9px; font-weight: 800; letter-spacing: 2.5px;
+            text-transform: uppercase; color: var(--gold);
+            background: var(--gold-faint); padding: 3px 12px;
+            border-radius: 20px; margin-bottom: 6px;
         }
         .panel-title {
-            font-size: 15px; font-weight: 700; color: var(--navy);
-            letter-spacing: -0.2px; margin-bottom: 16px;
+            font-size: 16px; font-weight: 800; color: var(--navy);
+            letter-spacing: -0.3px; margin-bottom: 18px;
         }
         .panel-desc {
-            font-size: 12px; color: var(--text3); line-height: 1.55;
-            margin-bottom: 16px; max-width: 640px;
+            font-size: 12px; color: var(--text3); line-height: 1.6;
+            margin-bottom: 18px; max-width: 680px;
         }
 
         /* ── FORM ───────────────────────────────────────── */
@@ -87,135 +115,167 @@
         .field { display: flex; flex-direction: column; }
         .field label {
             font-size: 10px; font-weight: 700; color: var(--text3);
-            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
         }
         .field input, .field select {
-            padding: 10px 12px; border: 1px solid var(--border);
+            padding: 11px 14px; border: 1px solid var(--border);
             border-radius: var(--radius); font-size: 13px; font-family: 'Inter', sans-serif;
             color: var(--text); background: var(--white);
-            transition: border-color var(--transition), box-shadow var(--transition);
+            box-shadow: var(--shadow);
+            transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
         }
         .field input:focus, .field select:focus {
             outline: none; border-color: var(--gold); box-shadow: var(--shadow-focus);
+            transform: translateY(-1px);
         }
         .field input::placeholder { color: var(--text4); }
-        .field-hint { font-size: 10px; color: var(--text4); margin-top: 3px; line-height: 1.4; }
+        .field-hint { font-size: 10px; color: var(--text4); margin-top: 4px; line-height: 1.4; }
         .field-hint.ok { color: var(--green); }
         .field-hint.err { color: var(--red); }
 
+        /* strategy selector */
+        .strat-select {
+            padding: 11px 14px; border: 2px solid var(--gold);
+            border-radius: var(--radius); font-size: 13px; font-family: 'Inter', sans-serif;
+            font-weight: 600; color: var(--navy); background: var(--gold-faint);
+            box-shadow: 0 2px 8px rgba(184,150,62,0.12);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .strat-select:focus { outline: none; box-shadow: var(--shadow-focus); }
+
         /* ── BUTTONS ────────────────────────────────────── */
         .btn {
-            display: inline-flex; align-items: center; gap: 7px;
-            padding: 10px 22px; border: none; border-radius: var(--radius);
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 11px 24px; border: none; border-radius: var(--radius);
             font-size: 12px; font-weight: 700; font-family: 'Inter', sans-serif;
             cursor: pointer; transition: all var(--transition);
             letter-spacing: 0.3px;
         }
-        .btn-gold { background: var(--gold); color: var(--white); }
-        .btn-gold:hover { background: var(--gold-hover); box-shadow: var(--shadow-md); transform: translateY(-1px); }
-        .btn-navy { background: var(--navy); color: var(--white); }
-        .btn-navy:hover { background: var(--navy-mid); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-hover) 100%);
+            color: var(--white);
+            box-shadow: 0 4px 14px rgba(184,150,62,0.3);
+        }
+        .btn-gold:hover { box-shadow: 0 6px 20px rgba(184,150,62,0.4); transform: translateY(-2px); }
+        .btn-navy {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+            color: var(--white);
+            box-shadow: 0 4px 14px rgba(10,22,40,0.2);
+        }
+        .btn-navy:hover { box-shadow: 0 6px 20px rgba(10,22,40,0.3); transform: translateY(-2px); }
         .btn-ghost { background: transparent; color: var(--navy); border: 1px solid var(--border); }
-        .btn-ghost:hover { border-color: var(--navy); background: var(--bg2); }
-        .btn-xs { padding: 5px 12px; font-size: 10px; font-weight: 600; color: var(--text3); border: 1px solid var(--border); background: transparent; }
+        .btn-ghost:hover { border-color: var(--navy); background: var(--white); transform: translateY(-1px); box-shadow: var(--shadow); }
+        .btn-xs { padding: 5px 12px; font-size: 10px; font-weight: 600; color: var(--text3); border: 1px solid var(--border); background: transparent; border-radius: 6px; }
         .btn-xs:hover { color: var(--red); border-color: var(--red); background: var(--red-bg); }
-        .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
-        .btn-row { display: flex; gap: 10px; margin-top: 16px; }
+        .btn:disabled { opacity: .45; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+        .btn-row { display: flex; gap: 12px; margin-top: 18px; }
 
         /* ── ALLOCATION BAR ─────────────────────────────── */
         .alloc-meter {
-            display: flex; align-items: center; gap: 12px;
-            padding: 10px 14px; background: var(--bg); border: 1px solid var(--border-light);
-            border-radius: var(--radius); margin-bottom: 16px;
+            display: flex; align-items: center; gap: 14px;
+            padding: 12px 16px; background: var(--white); border: 1px solid var(--border-light);
+            border-radius: var(--radius); margin-bottom: 18px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.04);
         }
         .alloc-meter-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
-        .alloc-meter-bar { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
-        .alloc-meter-fill { height: 100%; border-radius: 3px; transition: all .3s ease; }
-        .alloc-meter-fill.ok { background: var(--green); }
-        .alloc-meter-fill.over { background: var(--red); }
-        .alloc-meter-fill.under { background: var(--gold); }
-        .alloc-meter-pct { font-size: 15px; font-weight: 800; min-width: 48px; text-align: right; font-variant-numeric: tabular-nums; }
+        .alloc-meter-bar { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.08); }
+        .alloc-meter-fill { height: 100%; border-radius: 4px; transition: all .4s ease; }
+        .alloc-meter-fill.ok { background: linear-gradient(90deg, #0d6938, #14a85c); }
+        .alloc-meter-fill.over { background: linear-gradient(90deg, #a31515, #e04040); }
+        .alloc-meter-fill.under { background: linear-gradient(90deg, var(--gold), var(--gold-hover)); }
+        .alloc-meter-pct { font-size: 16px; font-weight: 800; min-width: 52px; text-align: right; font-variant-numeric: tabular-nums; }
 
         /* ── ALLOCATION CARD ────────────────────────────── */
         .acard {
-            border: 1px solid var(--border); border-radius: var(--radius);
-            padding: 18px 22px; margin-bottom: 12px; background: var(--white);
-            transition: border-color var(--transition), box-shadow var(--transition);
+            border: 1px solid var(--border); border-radius: var(--radius-lg);
+            padding: 20px 24px; margin-bottom: 14px; background: var(--white);
+            border-left: 4px solid var(--gold);
+            transition: all var(--transition);
+            box-shadow: var(--shadow);
         }
-        .acard:hover { border-color: var(--gold); box-shadow: 0 2px 8px rgba(184,150,62,.08); }
-        .acard-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-        .acard-top h4 { font-size: 13px; font-weight: 700; color: var(--navy); }
-        .acard-top-right { display: flex; align-items: center; gap: 8px; }
+        .acard:hover { transform: translateX(4px); box-shadow: var(--shadow-md); border-color: var(--gold); }
+        .acard-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .acard-top h4 { font-size: 14px; font-weight: 700; color: var(--navy); }
+        .acard-top-right { display: flex; align-items: center; gap: 10px; }
         .tag {
-            display: inline-block; padding: 2px 9px; border-radius: 20px;
-            font-size: 9px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
+            display: inline-block; padding: 3px 10px; border-radius: 20px;
+            font-size: 9px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase;
         }
         .tag-live { background: var(--green-bg); color: var(--green); }
         .tag-manual { background: var(--gold-pale); color: var(--gold); }
         .tag-fixed { background: var(--bg2); color: var(--text3); }
-        .strat-divider { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-light); }
-        .strat-label { font-size: 9px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-        .rate-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .strat-divider { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-light); }
+        .strat-label { font-size: 9px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .rate-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 
         /* ── RESULTS ────────────────────────────────────── */
         .metrics {
             display: grid; grid-template-columns: repeat(3, 1fr);
-            border: 1px solid var(--border); border-radius: var(--radius-lg);
-            overflow: hidden; margin-bottom: 20px;
+            gap: 16px; margin-bottom: 22px;
         }
         .metric {
-            padding: 22px 24px; background: var(--white);
-            border-right: 1px solid var(--border);
+            padding: 24px 26px; background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            transition: all var(--transition);
         }
-        .metric:last-child { border-right: none; }
+        .metric:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
         .metric-label {
             font-size: 9px; font-weight: 700; color: var(--text3);
-            text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px;
+            text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 10px;
         }
         .metric-val {
-            font-size: 26px; font-weight: 800; letter-spacing: -0.5px;
+            font-size: 28px; font-weight: 800; letter-spacing: -0.5px;
             font-variant-numeric: tabular-nums; line-height: 1;
         }
-        .metric-sub { font-size: 12px; font-weight: 600; margin-top: 6px; }
+        .metric-sub { font-size: 12px; font-weight: 600; margin-top: 8px; }
         .c-navy { color: var(--navy); }
         .c-green { color: var(--green); }
         .c-red { color: var(--red); }
 
         /* ── TABLE ──────────────────────────────────────── */
-        .tbl-wrap { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+        .tbl-wrap {
+            border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden;
+            box-shadow: var(--shadow);
+        }
         .tbl { width: 100%; border-collapse: collapse; }
         .tbl thead th {
-            background: var(--bg2); border-bottom: 2px solid var(--gold);
-            padding: 9px 14px; font-size: 9px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: .8px; color: var(--text3); text-align: left;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+            border-bottom: 3px solid var(--gold);
+            padding: 12px 16px; font-size: 9px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: .8px; color: rgba(255,255,255,0.7); text-align: left;
         }
         .tbl thead th.r { text-align: right; }
         .tbl tbody td {
-            padding: 11px 14px; font-size: 12px; border-bottom: 1px solid var(--border-light); vertical-align: middle;
+            padding: 13px 16px; font-size: 12px; border-bottom: 1px solid var(--border-light); vertical-align: middle;
+            transition: background var(--transition);
         }
+        .tbl tbody tr:hover td { background: var(--gold-faint); }
         .tbl tbody td.r { text-align: right; font-variant-numeric: tabular-nums; }
         .tbl tbody td.b { font-weight: 700; }
         .tbl tbody tr:last-child td {
             border-top: 2px solid var(--navy); border-bottom: none;
             background: var(--bg); font-weight: 800; font-size: 12px;
         }
-        .strat-sub { display: block; font-size: 10px; color: var(--text3); font-weight: 400; margin-top: 2px; }
+        .tbl tbody tr:last-child:hover td { background: var(--bg2); }
+        .strat-sub { display: block; font-size: 10px; color: var(--text3); font-weight: 400; margin-top: 3px; }
 
         /* ── MISC ───────────────────────────────────────── */
         .spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(255,255,255,.25); border-radius: 50%; border-top-color: currentColor; animation: spin .6s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .hidden { display: none !important; }
-        .fade-in { animation: fadeUp .35s ease-out both; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: slideUp .4s ease-out both; }
 
         @media (max-width: 768px) {
-            .page { padding: 16px; }
+            .page { padding: 16px 16px 60px; }
+            .panel { padding: 22px 20px; }
             .grid { grid-template-columns: 1fr; }
             .metrics { grid-template-columns: 1fr; }
-            .metric { border-right: none; border-bottom: 1px solid var(--border); }
-            .metric:last-child { border-bottom: none; }
             .rate-row { grid-template-columns: 1fr; }
-            .panel { padding: 20px; }
+            .masthead-inner { padding: 12px 16px; }
+            .masthead-right { display: none; }
         }
     </style>
 </head>
@@ -246,17 +306,23 @@
                 <input type="text" id="clientName" placeholder="John & Jane Smith">
             </div>
             <div class="field">
-                <label>Annuity Product</label>
-                <select id="annuityProduct">
-                    <option value="">Select product...</option>
-                    {% for key, p in products.items() %}
-                    <option value="{{ key }}">{{ p.name }} &mdash; {{ p.carrier }}</option>
+                <label>Insurance Carrier</label>
+                <select id="carrierSelect" onchange="carrierChg()">
+                    <option value="">Select carrier...</option>
+                    {% for ckey, cdata in carriers.items() %}
+                    <option value="{{ ckey }}">{{ cdata.name }}</option>
                     {% endfor %}
                     <option value="custom">Other / Custom</option>
                 </select>
             </div>
+            <div class="field">
+                <label>Annuity Product</label>
+                <select id="annuityProduct" onchange="productChg()">
+                    <option value="">Select carrier first...</option>
+                </select>
+            </div>
             <div class="field hidden" id="customNameWrap">
-                <label>Product Name</label>
+                <label>Custom Product Name</label>
                 <input type="text" id="customAnnuityName" placeholder="Enter product name">
             </div>
         </div>
@@ -287,8 +353,9 @@
         <div class="panel-overline">Step 2</div>
         <div class="panel-title">Index Allocations & Crediting Strategy</div>
         <div class="panel-desc">
-            Configure each index allocation with its crediting parameters (spread, participation rate, cap).
-            S&P 500 returns are fetched live. Proprietary index returns must be entered manually from carrier statements.
+            Configure each index allocation with its crediting parameters.
+            Choose either a <strong>Participation Rate</strong> strategy (variable par rate, no cap) or a <strong>Cap Rate</strong> strategy (variable cap, 100% par rate).
+            S&amp;P 500 and BlackRock Market Advantage returns are fetched live.
         </div>
 
         <div class="alloc-meter">
@@ -325,7 +392,7 @@
     </div>
 
     <!-- RESULTS -->
-    <div class="panel hidden" id="resultsPanel">
+    <div class="panel hidden" id="resultsPanel" style="animation-delay:0s;">
         <div class="panel-overline">Results</div>
         <div class="panel-title">Account Performance Summary</div>
 
@@ -363,14 +430,10 @@
 </div>
 
 <script>
-const products = {{ products | tojson }};
-const live = { "sp500": { name: "S&P 500", ticker: "^GSPC" } };
-const allIdx = {
-    "sp500": "S&P 500", "ba10": "Balanced Asset 10 Index", "ba5": "Balanced Asset 5 Index",
-    "bts5": "Barclays Trailblazer Sectors 5", "brk_ma": "BlackRock Market Advantage Index",
-    "gs_global": "GS Global Factor Index", "ms_eq": "Morgan Stanley US Equity Allocator",
-    "bloom_versa10": "Bloomberg Versa 10", "barc_atlas5": "Barclays Atlas 5",
-    "sp500_raven": "S&P 500 RavenPack AI", "ndx_gen5": "NDX Generations 5",
+const carriers = {{ carriers | tojson }};
+const live = {
+    "sp500":  { name: "S&P 500",                     ticker: "^GSPC" },
+    "brk_ma": { name: "BlackRock Market Advantage",   ticker: "^BMADVVCX" }
 };
 
 let n = 0, lastRes = null;
@@ -378,13 +441,63 @@ const $ = id => document.getElementById(id);
 const fmt = (v, d=2) => v.toLocaleString(undefined, {minimumFractionDigits: d, maximumFractionDigits: d});
 
 $('todayDate').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-$('annuityProduct').addEventListener('change', e => $('customNameWrap').classList.toggle('hidden', e.target.value !== 'custom'));
 
-function annuityName() {
-    const s = $('annuityProduct');
-    return s.value === 'custom' ? ($('customAnnuityName').value || 'Custom') : (s.options[s.selectedIndex]?.text || '');
+/* ── Carrier → Product selector ────────────────────────────────────────── */
+function carrierChg() {
+    const ck = $('carrierSelect').value;
+    const ps = $('annuityProduct');
+    ps.innerHTML = '';
+    $('customNameWrap').classList.add('hidden');
+
+    if (ck === 'custom') {
+        ps.innerHTML = '<option value="custom">Custom Product</option>';
+        $('customNameWrap').classList.remove('hidden');
+        return;
+    }
+    if (!ck) {
+        ps.innerHTML = '<option value="">Select carrier first...</option>';
+        return;
+    }
+    const c = carriers[ck];
+    if (!c) return;
+    ps.innerHTML = '<option value="">Select product...</option>';
+    Object.entries(c.products).forEach(([pk, pv]) => {
+        const o = document.createElement('option');
+        o.value = ck + '|' + pk;
+        o.textContent = pv.name;
+        ps.appendChild(o);
+    });
+    const cust = document.createElement('option');
+    cust.value = 'custom';
+    cust.textContent = 'Other / Custom';
+    ps.appendChild(cust);
 }
 
+function productChg() {
+    $('customNameWrap').classList.toggle('hidden', $('annuityProduct').value !== 'custom');
+}
+
+function annuityName() {
+    const pv = $('annuityProduct').value;
+    if (!pv || pv === 'custom') return $('customAnnuityName')?.value || 'Custom Product';
+    const [ck, pk] = pv.split('|');
+    const carrier = carriers[ck];
+    if (!carrier) return pv;
+    const product = carrier.products[pk];
+    return product ? product.name + ' — ' + carrier.name : pv;
+}
+
+function getProductIndexes() {
+    const pv = $('annuityProduct').value;
+    if (!pv || pv === 'custom') return null;
+    const [ck, pk] = pv.split('|');
+    const carrier = carriers[ck];
+    if (!carrier) return null;
+    const product = carrier.products[pk];
+    return product ? product.indexes : null;
+}
+
+/* ── Allocation meter ──────────────────────────────────────────────────── */
 function updateMeter() {
     let t = 0;
     document.querySelectorAll('.pct-in').forEach(el => t += parseFloat(el.value) || 0);
@@ -394,9 +507,26 @@ function updateMeter() {
     $('meterPct').style.color = t === 100 ? 'var(--green)' : t > 100 ? 'var(--red)' : 'var(--gold)';
 }
 
+/* ── Strategy toggle ───────────────────────────────────────────────────── */
+function stratChg(id) {
+    const st = $('strat' + id).value;
+    const parWrap = $('parWrap' + id);
+    const capWrap = $('capWrap' + id);
+    if (st === 'par') {
+        parWrap.classList.remove('hidden');
+        capWrap.classList.add('hidden');
+        $('cap' + id).value = '';
+    } else {
+        capWrap.classList.remove('hidden');
+        parWrap.classList.add('hidden');
+        $('par' + id).value = '';
+    }
+}
+
+/* ── Add allocation card ───────────────────────────────────────────────── */
 function addAlloc(type) {
     n++;
-    const id = n, pk = $('annuityProduct').value, box = $('allocations');
+    const id = n, box = $('allocations');
 
     if (type === 'fixed') {
         box.insertAdjacentHTML('beforeend', `
@@ -412,10 +542,22 @@ function addAlloc(type) {
             </div>`);
     } else {
         let opts = '';
-        if (pk && pk !== 'custom' && products[pk]) {
-            products[pk].indexes.forEach(i => { opts += `<option value="${i.id}">${i.name} [${live[i.id] ? 'LIVE' : 'MANUAL'}]</option>`; });
+        const indexes = getProductIndexes();
+        if (indexes) {
+            indexes.forEach(i => {
+                opts += `<option value="${i.id}">${i.name} [${live[i.id] ? 'LIVE' : 'MANUAL'}]</option>`;
+            });
         } else {
-            Object.entries(allIdx).forEach(([k,v]) => { opts += `<option value="${k}">${v} [${live[k] ? 'LIVE' : 'MANUAL'}]</option>`; });
+            // Show all indexes if no product selected
+            const allIdx = {};
+            Object.values(carriers).forEach(c => {
+                Object.values(c.products).forEach(p => {
+                    p.indexes.forEach(i => { allIdx[i.id] = i.name; });
+                });
+            });
+            Object.entries(allIdx).forEach(([k, v]) => {
+                opts += `<option value="${k}">${v} [${live[k] ? 'LIVE' : 'MANUAL'}]</option>`;
+            });
         }
         box.insertAdjacentHTML('beforeend', `
             <div class="acard fade-in" id="a${id}" data-t="index">
@@ -433,10 +575,19 @@ function addAlloc(type) {
                 </div>
                 <div class="strat-divider">
                     <div class="strat-label">Crediting Strategy</div>
+                    <div class="grid" style="margin-bottom:12px;">
+                        <div class="field">
+                            <label>Strategy Type</label>
+                            <select class="strat-select" id="strat${id}" onchange="stratChg(${id})">
+                                <option value="cap">Cap Rate Strategy</option>
+                                <option value="par">Participation Rate Strategy</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="rate-row">
                         <div class="field"><label>Spread (%)</label><input type="number" id="spr${id}" placeholder="5.50" step="0.01" min="0"><div class="field-hint">Deducted from gains first</div></div>
-                        <div class="field"><label>Participation Rate (%)</label><input type="number" id="par${id}" placeholder="150" step="1" min="0"></div>
-                        <div class="field"><label>Cap Rate (%)</label><input type="number" id="cap${id}" placeholder="10.25" step="0.01" min="0"></div>
+                        <div class="field hidden" id="parWrap${id}"><label>Participation Rate (%)</label><input type="number" id="par${id}" placeholder="150" step="1" min="0"><div class="field-hint">Applied to gain after spread</div></div>
+                        <div class="field" id="capWrap${id}"><label>Cap Rate (%)</label><input type="number" id="cap${id}" placeholder="10.25" step="0.01" min="0"><div class="field-hint">Maximum credited return</div></div>
                     </div>
                 </div>
             </div>`);
@@ -446,6 +597,7 @@ function addAlloc(type) {
 
 function rmAlloc(id) { $('a' + id)?.remove(); updateMeter(); }
 
+/* ── Index change — live fetch ─────────────────────────────────────────── */
 function idxChg(id) {
     const v = $('sel' + id).value, tag = $('tag' + id), inp = $('ret' + id), hint = $('hint' + id);
     $('custWrap' + id).classList.toggle('hidden', v !== 'cust');
@@ -480,23 +632,55 @@ $('anniversaryDate').addEventListener('change', () => {
     });
 });
 
+/* ── Gather allocations ────────────────────────────────────────────────── */
 function gather() {
     const out = [];
     document.querySelectorAll('.acard').forEach(c => {
         const id = c.id.replace('a','');
         if (c.dataset.t === 'fixed') {
-            out.push({ name:'Fixed Interest', allocation_pct: parseFloat($('pct'+id)?.value)||0, fixed_rate: parseFloat($('fix'+id)?.value)||0, is_fixed: true });
+            out.push({ name:'Fixed Interest', allocation_pct: parseFloat($('pct'+id)?.value)||0,
+                        fixed_rate: parseFloat($('fix'+id)?.value)||0, is_fixed: true });
         } else {
             const s = $('sel'+id);
+            // Build all index names from carriers
+            const allIdx = {};
+            Object.values(carriers).forEach(cr => {
+                Object.values(cr.products).forEach(p => {
+                    p.indexes.forEach(i => { allIdx[i.id] = i.name; });
+                });
+            });
             let nm = s.value === 'cust' ? ($('custName'+id)?.value||'Custom Index') : (allIdx[s.value] || s.options[s.selectedIndex]?.text || 'Index');
-            const cv = $('cap'+id)?.value, pv = $('par'+id)?.value, sv = $('spr'+id)?.value;
-            out.push({ name: nm, allocation_pct: parseFloat($('pct'+id)?.value)||0, index_return: parseFloat($('ret'+id)?.value)||0,
-                cap_rate: cv ? +cv : null, par_rate: pv ? +pv : null, spread_rate: sv ? +sv : null, is_fixed: false });
+
+            const strat = $('strat'+id)?.value || 'cap';
+            const sv = $('spr'+id)?.value;
+            let cap_rate = null, par_rate = null;
+
+            if (strat === 'cap') {
+                const cv = $('cap'+id)?.value;
+                cap_rate = cv ? +cv : null;
+                par_rate = 100;   // cap strategy always has 100% par
+            } else {
+                const pv = $('par'+id)?.value;
+                par_rate = pv ? +pv : null;
+                cap_rate = null;  // par strategy is uncapped
+            }
+
+            out.push({
+                name: nm,
+                allocation_pct: parseFloat($('pct'+id)?.value)||0,
+                index_return: parseFloat($('ret'+id)?.value)||0,
+                cap_rate: cap_rate,
+                par_rate: par_rate,
+                spread_rate: sv ? +sv : null,
+                is_fixed: false,
+                strategy_type: strat,
+            });
         }
     });
     return out;
 }
 
+/* ── Calculate ─────────────────────────────────────────────────────────── */
 function doCalc() {
     const cv = parseFloat($('currentValue').value);
     if (!cv || cv <= 0) { alert('Enter the current account value.'); return; }
@@ -511,11 +695,14 @@ function doCalc() {
     fetch('/api/calculate', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ current_value: cv, allocations: allocs }) })
     .then(r => r.json()).then(data => {
         if (data.error) { alert(data.error); return; }
-        lastRes = data; lastRes.annuity_name = annuityName(); lastRes.client_name = $('clientName').value || 'Client';
+        lastRes = data;
+        lastRes.annuity_name = annuityName();
+        lastRes.client_name = $('clientName').value || 'Client';
         lastRes.advisor_name = $('advisorName').value || '';
         lastRes.advisor_title = $('advisorTitle').value || '';
 
         $('resultsPanel').classList.remove('hidden');
+        $('resultsPanel').style.animationDelay = '0s';
         $('reportBtn').classList.remove('hidden');
 
         $('rvCurr').textContent = '$' + fmt(data.current_value);
@@ -532,8 +719,20 @@ function doCalc() {
         const tb = $('tblBody'); tb.innerHTML = '';
         data.allocations.forEach(a => {
             let nm = a.name, dets = [];
-            if (a.is_fixed) dets.push(`Fixed: ${(a.fixed_rate||0).toFixed(2)}%`);
-            else { if (a.spread_rate) dets.push(`Spread ${a.spread_rate}%`); if (a.par_rate) dets.push(`Par ${a.par_rate}%`); if (a.cap_rate) dets.push(`Cap ${a.cap_rate}%`); }
+            const st = a.strategy_type;
+            if (a.is_fixed) {
+                dets.push(`Fixed: ${(a.fixed_rate||0).toFixed(2)}%`);
+            } else {
+                if (a.spread_rate) dets.push(`Spread ${a.spread_rate}%`);
+                if (st === 'par') {
+                    dets.push(`Par Rate ${(a.par_rate||100)}%`);
+                } else if (st === 'cap') {
+                    dets.push(`Cap ${(a.cap_rate||0).toFixed(2)}%`);
+                } else {
+                    if (a.par_rate && a.par_rate !== 100) dets.push(`Par ${a.par_rate}%`);
+                    if (a.cap_rate) dets.push(`Cap ${a.cap_rate}%`);
+                }
+            }
             if (dets.length) nm += `<span class="strat-sub">${dets.join(' &middot; ')}</span>`;
             const ir = a.is_fixed ? '--' : `${(a.index_return||0)>=0?'+':''}${(a.index_return||0).toFixed(2)}%`;
             const ic = a.is_fixed ? '' : ((a.index_return||0)>=0 ? 'color:var(--green)' : 'color:var(--red)');
@@ -549,6 +748,7 @@ function doCalc() {
     .finally(() => { btn.disabled = false; btn.innerHTML = 'Calculate Updated Value'; });
 }
 
+/* ── PDF Report ────────────────────────────────────────────────────────── */
 function doReport() {
     if (!lastRes) return;
     const btn = $('reportBtn');

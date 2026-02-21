@@ -19,7 +19,6 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 
 # Handle PyInstaller bundled paths
 if getattr(sys, "frozen", False):
-    # Running as bundled app — resources are in sys._MEIPASS
     base_dir = sys._MEIPASS
     app = Flask(__name__,
                 template_folder=os.path.join(base_dir, "templates"),
@@ -30,54 +29,68 @@ else:
                 template_folder=os.path.join(base_dir, "templates"),
                 static_folder=os.path.join(base_dir, "static"))
 
-# ── Annuity products ─────────────────────────────────────────────────────────
+# ── Shared index pools per carrier ──────────────────────────────────────────
 
-ANNUITY_PRODUCTS = {
-    "accelerator_plus_10": {
-        "name": "Accelerator Plus 10",
-        "carrier": "Fidelity & Guaranty Life",
-        "indexes": [
-            {"id": "sp500", "name": "S&P 500", "ticker": "^GSPC"},
-            {"id": "ba10", "name": "Balanced Asset 10 Index", "ticker": None},
-            {"id": "ba5", "name": "Balanced Asset 5 Index", "ticker": None},
-            {"id": "bts5", "name": "Barclays Trailblazer Sectors 5", "ticker": None},
-            {"id": "brk_ma", "name": "BlackRock Market Advantage Index", "ticker": None},
-            {"id": "gs_global", "name": "GS Global Factor Index", "ticker": None},
-            {"id": "ms_eq", "name": "Morgan Stanley US Equity Allocator", "ticker": None},
-        ],
+FG_INDEXES = [
+    {"id": "sp500",     "name": "S&P 500",                           "ticker": "^GSPC"},
+    {"id": "ba10",      "name": "Balanced Asset 10 Index",           "ticker": None},
+    {"id": "ba5",       "name": "Balanced Asset 5 Index",            "ticker": None},
+    {"id": "bts5",      "name": "Barclays Trailblazer Sectors 5",    "ticker": None},
+    {"id": "brk_ma",    "name": "BlackRock Market Advantage Index",  "ticker": "^BMADVVCX"},
+    {"id": "gs_global", "name": "GS Global Factor Index",            "ticker": None},
+    {"id": "ms_eq",     "name": "Morgan Stanley US Equity Allocator","ticker": None},
+]
+
+SILAC_INDEXES = [
+    {"id": "sp500",         "name": "S&P 500",              "ticker": "^GSPC"},
+    {"id": "bloom_versa10", "name": "Bloomberg Versa 10",   "ticker": None},
+    {"id": "barc_atlas5",   "name": "Barclays Atlas 5",     "ticker": None},
+    {"id": "sp500_raven",   "name": "S&P 500 RavenPack AI", "ticker": None},
+    {"id": "ndx_gen5",      "name": "NDX Generations 5",    "ticker": None},
+]
+
+# ── Carrier → Product hierarchy ─────────────────────────────────────────────
+
+CARRIERS = {
+    "fg": {
+        "name": "F&G (Fidelity & Guaranty)",
+        "products": {
+            "accelerator_plus_10":  {"name": "Accelerator Plus 10",      "indexes": FG_INDEXES},
+            "accelerator_plus_14":  {"name": "Accelerator Plus 14",      "indexes": FG_INDEXES},
+            "performance_pro":      {"name": "Performance Pro",          "indexes": FG_INDEXES},
+            "prosperity_elite_7":   {"name": "Prosperity Elite 7",       "indexes": FG_INDEXES},
+            "prosperity_elite_10":  {"name": "Prosperity Elite 10",      "indexes": FG_INDEXES},
+            "prosperity_elite_14":  {"name": "Prosperity Elite 14",      "indexes": FG_INDEXES},
+            "accumulator_plus_7":   {"name": "FG AccumulatorPlus 7",     "indexes": FG_INDEXES},
+            "accumulator_plus_10":  {"name": "FG AccumulatorPlus 10",    "indexes": FG_INDEXES},
+            "guarantee_plat_3":     {"name": "FG Guarantee-Platinum 3",  "indexes": FG_INDEXES},
+            "guarantee_plat_5":     {"name": "FG Guarantee-Platinum 5",  "indexes": FG_INDEXES},
+            "guarantee_plat_7":     {"name": "FG Guarantee-Platinum 7",  "indexes": FG_INDEXES},
+            "safe_income_adv":      {"name": "F&G Safe Income Advantage","indexes": FG_INDEXES},
+        },
     },
-    "silac_denali_14": {
-        "name": "SILAC Denali 14 Elevation Plus",
-        "carrier": "SILAC",
-        "indexes": [
-            {"id": "sp500", "name": "S&P 500", "ticker": "^GSPC"},
-            {"id": "bloom_versa10", "name": "Bloomberg Versa 10", "ticker": None},
-            {"id": "barc_atlas5", "name": "Barclays Atlas 5", "ticker": None},
-            {"id": "sp500_raven", "name": "S&P 500 RavenPack AI", "ticker": None},
-            {"id": "ndx_gen5", "name": "NDX Generations 5", "ticker": None},
-        ],
-    },
-    "silac_teton_10": {
-        "name": "SILAC Teton 10 Elevation Plus",
-        "carrier": "SILAC",
-        "indexes": [
-            {"id": "sp500", "name": "S&P 500", "ticker": "^GSPC"},
-            {"id": "bloom_versa10", "name": "Bloomberg Versa 10", "ticker": None},
-            {"id": "barc_atlas5", "name": "Barclays Atlas 5", "ticker": None},
-            {"id": "sp500_raven", "name": "S&P 500 RavenPack AI", "ticker": None},
-            {"id": "ndx_gen5", "name": "NDX Generations 5", "ticker": None},
-        ],
-    },
-    "silac_vega_14": {
-        "name": "SILAC Vega Bonus 14",
-        "carrier": "SILAC",
-        "indexes": [
-            {"id": "sp500", "name": "S&P 500", "ticker": "^GSPC"},
-            {"id": "bloom_versa10", "name": "Bloomberg Versa 10", "ticker": None},
-            {"id": "barc_atlas5", "name": "Barclays Atlas 5", "ticker": None},
-            {"id": "sp500_raven", "name": "S&P 500 RavenPack AI", "ticker": None},
-            {"id": "ndx_gen5", "name": "NDX Generations 5", "ticker": None},
-        ],
+    "silac": {
+        "name": "SILAC Insurance Company",
+        "products": {
+            "teton_5":          {"name": "SILAC Teton 5",                   "indexes": SILAC_INDEXES},
+            "teton_7":          {"name": "SILAC Teton 7",                   "indexes": SILAC_INDEXES},
+            "teton_10":         {"name": "SILAC Teton 10",                  "indexes": SILAC_INDEXES},
+            "teton_14":         {"name": "SILAC Teton 14",                  "indexes": SILAC_INDEXES},
+            "teton_bonus_5":    {"name": "SILAC Teton Bonus 5",             "indexes": SILAC_INDEXES},
+            "teton_bonus_7":    {"name": "SILAC Teton Bonus 7",             "indexes": SILAC_INDEXES},
+            "teton_bonus_10":   {"name": "SILAC Teton Bonus 10",            "indexes": SILAC_INDEXES},
+            "teton_bonus_14":   {"name": "SILAC Teton Bonus 14",            "indexes": SILAC_INDEXES},
+            "denali_7":         {"name": "SILAC Denali 7",                  "indexes": SILAC_INDEXES},
+            "denali_10":        {"name": "SILAC Denali 10",                 "indexes": SILAC_INDEXES},
+            "denali_14":        {"name": "SILAC Denali 14 Elevation Plus",  "indexes": SILAC_INDEXES},
+            "vega_7":           {"name": "SILAC Vega 7",                    "indexes": SILAC_INDEXES},
+            "vega_10":          {"name": "SILAC Vega 10",                   "indexes": SILAC_INDEXES},
+            "vega_14":          {"name": "SILAC Vega 14",                   "indexes": SILAC_INDEXES},
+            "vega_bonus_7":     {"name": "SILAC Vega Bonus 7",              "indexes": SILAC_INDEXES},
+            "vega_bonus_10":    {"name": "SILAC Vega Bonus 10",             "indexes": SILAC_INDEXES},
+            "vega_bonus_14":    {"name": "SILAC Vega Bonus 14",             "indexes": SILAC_INDEXES},
+            "evolve":           {"name": "SILAC Evolve",                    "indexes": SILAC_INDEXES},
+        },
     },
 }
 
@@ -158,6 +171,7 @@ def calculate_account_value(current_value, allocations):
             "spread_rate": alloc.get("spread_rate"),
             "fixed_rate": alloc.get("fixed_rate"),
             "is_fixed": alloc.get("is_fixed", False),
+            "strategy_type": alloc.get("strategy_type"),
         })
     return round(total_new, 2), results
 
@@ -165,7 +179,6 @@ def calculate_account_value(current_value, allocations):
 # ── PDF: Custom flowable for solid color bars ────────────────────────────────
 
 class ColorBar(Flowable):
-    """A solid colored rectangle spanning the full width."""
     def __init__(self, width, height, fill_color):
         Flowable.__init__(self)
         self.width = width
@@ -178,7 +191,6 @@ class ColorBar(Flowable):
 
 
 class GoldRule(Flowable):
-    """A thin gold line."""
     def __init__(self, width, thickness=1.5):
         Flowable.__init__(self)
         self.width = width
@@ -224,7 +236,6 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
 
     styles = getSampleStyleSheet()
 
-    # ── Styles ──
     def ps(name, **kw):
         defaults = dict(parent=styles["Normal"], fontName="Helvetica",
                         fontSize=9, leading=12, textColor=C_TEXT)
@@ -256,14 +267,12 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
 
     elements = []
 
-    # ═══════════════════════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════════════════════
     # LOGO ON WHITE + NAVY ACCENT BAR
-    # ═══════════════════════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════════════════════
 
-    logo_path = os.path.join(base_dir,
-                             "Georgia-Financial-Advisors-About.jpg")
+    logo_path = os.path.join(base_dir, "Georgia-Financial-Advisors-About.jpg")
 
-    # Logo rendered on white page background — clean, no dark bar clash
     if os.path.exists(logo_path):
         logo = Image(logo_path, width=2.1 * inch, height=0.71 * inch)
         elements.append(logo)
@@ -275,7 +284,6 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
 
     elements.append(Spacer(1, 8))
 
-    # Slim navy accent bar: advisor info left, firm name right
     advisor_left = ""
     if advisor_name:
         advisor_left = f"<b>{html_escape(advisor_name)}</b>"
@@ -285,17 +293,14 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
         advisor_left = "<b>Georgia Financial Advisors</b>"
 
     bar_cells = [[
-        Paragraph(
-            advisor_left,
-            ps("bar_left", fontSize=7.5, fontName="Helvetica-Bold",
-               textColor=C_WHITE, leading=10)),
-        Paragraph(
-            "Georgia Financial Advisors",
-            ps("bar_right", fontSize=7, textColor=colors.HexColor("#8899aa"),
-               alignment=TA_RIGHT, leading=10)),
+        Paragraph(advisor_left,
+                  ps("bar_left", fontSize=7.5, fontName="Helvetica-Bold",
+                     textColor=C_WHITE, leading=10)),
+        Paragraph("Georgia Financial Advisors",
+                  ps("bar_right", fontSize=7, textColor=colors.HexColor("#8899aa"),
+                     alignment=TA_RIGHT, leading=10)),
     ]]
-    bar_table = Table(bar_cells,
-                      colWidths=[usable * 0.55, usable * 0.45])
+    bar_table = Table(bar_cells, colWidths=[usable * 0.55, usable * 0.45])
     bar_table.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, -1), C_NAVY),
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
@@ -305,14 +310,12 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
         ("RIGHTPADDING", (-1, -1), (-1, -1), 14),
     ]))
     elements.append(bar_table)
-
-    # Gold rule under accent bar
     elements.append(GoldRule(usable, 1.5))
     elements.append(Spacer(1, 18))
 
-    # ═══════════════════════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════════════════════
     # TITLE + CLIENT INFO
-    # ═══════════════════════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════════════════════
 
     elements.append(Paragraph(
         "Annuity Performance Report",
@@ -323,18 +326,13 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
         f"Prepared for {html_escape(client_name)}  |  {report_date}",
         ps("title_sub", fontSize=9, textColor=C_TEXT3, spaceAfter=14)))
 
-    # Client detail grid — 2x2
     info_w = usable / 2
     info = Table(
         [
-            [
-                Paragraph("PRODUCT", S["info_label"]),
-                Paragraph("MEASUREMENT PERIOD", S["info_label"]),
-            ],
-            [
-                Paragraph(annuity_name, S["info_val"]),
-                Paragraph(index_date, S["info_val"]),
-            ],
+            [Paragraph("PRODUCT", S["info_label"]),
+             Paragraph("MEASUREMENT PERIOD", S["info_label"])],
+            [Paragraph(html_escape(annuity_name) if annuity_name else "N/A", S["info_val"]),
+             Paragraph(index_date, S["info_val"])],
         ],
         colWidths=[info_w, info_w],
     )
@@ -350,9 +348,9 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
     elements.append(GoldRule(usable, 0.75))
     elements.append(Spacer(1, 14))
 
-    # ═══════════════════════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════════════════════
     # ACCOUNT VALUE SUMMARY — 3 metric boxes
-    # ═══════════════════════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════════════════════
 
     total_return = ((new_value - current_value) / current_value * 100) if current_value > 0 else 0
     gain_loss = new_value - current_value
@@ -362,7 +360,6 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
     card_w = usable / 3
     box_pad = 14
 
-    # Build each card as a mini table with background
     def metric_card(label_text, value_text, sub_text, value_color=C_NAVY):
         return [
             Paragraph(label_text, S["hero_label"]),
@@ -372,19 +369,13 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
         ]
 
     cards_data = [
-        metric_card("CURRENT ACCOUNT VALUE",
-                    f"${current_value:,.2f}", " "),
-        metric_card("ESTIMATED UPDATED VALUE",
-                    f"${new_value:,.2f}",
-                    f"{ret_sign}${abs(gain_loss):,.2f}",
-                    C_NAVY),
-        metric_card("ESTIMATED PERIOD RETURN",
-                    f"{ret_sign}{total_return:.2f}%",
-                    "Since last anniversary",
-                    ret_color),
+        metric_card("CURRENT ACCOUNT VALUE", f"${current_value:,.2f}", " "),
+        metric_card("ESTIMATED UPDATED VALUE", f"${new_value:,.2f}",
+                    f"{ret_sign}${abs(gain_loss):,.2f}", C_NAVY),
+        metric_card("ESTIMATED PERIOD RETURN", f"{ret_sign}{total_return:.2f}%",
+                    "Since last anniversary", ret_color),
     ]
 
-    # Transpose to rows
     cards_table_data = []
     for row_idx in range(3):
         cards_table_data.append([cards_data[c][row_idx] for c in range(3)])
@@ -393,7 +384,6 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
     cards_table.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, -1), C_BG),
         ("BOX", (0, 0), (-1, -1), 0.5, C_BORDER),
-        # Column dividers
         ("LINEAFTER", (0, 0), (0, -1), 0.5, C_BORDER),
         ("LINEAFTER", (1, 0), (1, -1), 0.5, C_BORDER),
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
@@ -408,9 +398,9 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
     elements.append(cards_table)
     elements.append(Spacer(1, 16))
 
-    # ═══════════════════════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════════════════════
     # ALLOCATION DETAIL TABLE
-    # ═══════════════════════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════════════════════
 
     elements.append(Paragraph("ALLOCATION DETAIL", S["section"]))
 
@@ -446,12 +436,18 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
 
             name_html = f"<b>{html_escape(alloc['name'])}</b>"
             rate_parts = []
+            strat = alloc.get("strategy_type", "")
             if alloc.get("spread_rate"):
                 rate_parts.append(f"Spread {alloc['spread_rate']:.2f}%")
-            if alloc.get("par_rate"):
-                rate_parts.append(f"Par {alloc['par_rate']:.0f}%")
-            if alloc.get("cap_rate"):
+            if strat == "par" and alloc.get("par_rate"):
+                rate_parts.append(f"Par Rate {alloc['par_rate']:.0f}%")
+            elif strat == "cap" and alloc.get("cap_rate"):
                 rate_parts.append(f"Cap {alloc['cap_rate']:.2f}%")
+            else:
+                if alloc.get("par_rate") and alloc.get("par_rate") != 100:
+                    rate_parts.append(f"Par {alloc['par_rate']:.0f}%")
+                if alloc.get("cap_rate"):
+                    rate_parts.append(f"Cap {alloc['cap_rate']:.2f}%")
             if rate_parts:
                 name_html += (f"<br/><font size=6 color='#999999'>"
                               f"{'  |  '.join(rate_parts)}</font>")
@@ -472,34 +468,26 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
         ]
         table_data.append(row)
 
-    # Total row
     table_data.append([
         Paragraph("<b>TOTAL</b>", S["cell_b"]),
         Paragraph("<b>100%</b>",
-                  ps("tw", fontSize=8, fontName="Helvetica-Bold",
-                     alignment=TA_RIGHT)),
+                  ps("tw", fontSize=8, fontName="Helvetica-Bold", alignment=TA_RIGHT)),
         Paragraph("", S["cell"]),
         Paragraph(
             f"<b><font color='{('#0d6938' if total_return >= 0 else '#a31515')}'>"
             f"{ret_sign}{total_return:.2f}%</font></b>",
-            ps("tcr", fontSize=8, fontName="Helvetica-Bold",
-               alignment=TA_RIGHT)),
+            ps("tcr", fontSize=8, fontName="Helvetica-Bold", alignment=TA_RIGHT)),
         Paragraph(f"<b>${new_value:,.2f}</b>",
-                  ps("tev", fontSize=8, fontName="Helvetica-Bold",
-                     alignment=TA_RIGHT)),
+                  ps("tev", fontSize=8, fontName="Helvetica-Bold", alignment=TA_RIGHT)),
     ])
 
     tbl = Table(table_data, colWidths=col_widths, repeatRows=1)
     tbl.setStyle(TableStyle([
-        # Header row
         ("BACKGROUND", (0, 0), (-1, 0), C_BG2),
         ("LINEBELOW", (0, 0), (-1, 0), 1.5, C_GOLD),
-        # Body rows
         ("LINEBELOW", (0, 1), (-1, -2), 0.5, colors.HexColor("#eae7e1")),
-        # Total row
         ("LINEABOVE", (0, -1), (-1, -1), 1.5, C_NAVY),
         ("BACKGROUND", (0, -1), (-1, -1), C_BG),
-        # Padding
         ("TOPPADDING", (0, 0), (-1, -1), 8),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 8),
         ("LEFTPADDING", (0, 0), (0, -1), 8),
@@ -507,14 +495,13 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
         ("RIGHTPADDING", (-1, 0), (-1, -1), 8),
         ("RIGHTPADDING", (0, 0), (-2, -1), 4),
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        # Outer box
         ("BOX", (0, 0), (-1, -1), 0.5, C_BORDER),
     ]))
     elements.append(tbl)
 
-    # ═══════════════════════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════════════════════
     # METHODOLOGY BOX
-    # ═══════════════════════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════════════════════
 
     elements.append(Spacer(1, 16))
 
@@ -525,11 +512,12 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
                textColor=C_NAVY, leading=9))],
         [Paragraph(
             "Index interest is credited using the annual point-to-point method. "
-            "For strategies with a spread, the spread is deducted from positive "
-            "index gains first. The participation rate is then applied. The cap "
-            "rate limits the maximum credited return. Negative index performance "
-            "results in a 0% floor — the account value will never decrease due "
-            "to index performance.",
+            "For participation rate strategies, the participation rate is applied to "
+            "the index gain (after any spread deduction) with no cap. For cap rate "
+            "strategies, the index gain is subject to the stated cap with a 100% "
+            "participation rate. Spreads, when applicable, are deducted from positive "
+            "index gains first. Negative index performance results in a 0% floor "
+            "— the account value will never decrease due to index performance.",
             S["body"])],
     ]
     meth_table = Table(meth_content, colWidths=[usable - 24])
@@ -543,9 +531,9 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
     ]))
     elements.append(meth_table)
 
-    # ═══════════════════════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════════════════════
     # DISCLOSURES + FOOTER
-    # ═══════════════════════════════════════════════════════════════════════════
+    # ═════════════════════════════════════════════════════════════════════════
 
     elements.append(Spacer(1, 18))
     elements.append(GoldRule(usable, 0.5))
@@ -570,7 +558,6 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
 
     elements.append(Spacer(1, 16))
 
-    # Footer bar
     footer_left = "Georgia Financial Advisors"
     if advisor_name:
         footer_left = f"{html_escape(advisor_name)}"
@@ -578,18 +565,15 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
             footer_left += f"  |  {html_escape(advisor_title)}"
 
     footer_cells = [[
-        Paragraph(
-            f"<b>{footer_left}</b>",
-            ps("fn", fontSize=7, fontName="Helvetica-Bold",
-               textColor=C_WHITE, leading=9)),
-        Paragraph(
-            "6001 Chatham Center Dr, Suite 140, Savannah, GA 31405",
-            ps("fa", fontSize=6, textColor=colors.HexColor("#8899aa"),
-               alignment=TA_CENTER, leading=8)),
-        Paragraph(
-            f"Georgia Financial Advisors  |  {report_date}",
-            ps("fd", fontSize=6, textColor=colors.HexColor("#8899aa"),
-               alignment=TA_RIGHT, leading=8)),
+        Paragraph(f"<b>{footer_left}</b>",
+                  ps("fn", fontSize=7, fontName="Helvetica-Bold",
+                     textColor=C_WHITE, leading=9)),
+        Paragraph("6001 Chatham Center Dr, Suite 140, Savannah, GA 31405",
+                  ps("fa", fontSize=6, textColor=colors.HexColor("#8899aa"),
+                     alignment=TA_CENTER, leading=8)),
+        Paragraph(f"Georgia Financial Advisors  |  {report_date}",
+                  ps("fd", fontSize=6, textColor=colors.HexColor("#8899aa"),
+                     alignment=TA_RIGHT, leading=8)),
     ]]
     footer_table = Table(footer_cells,
                          colWidths=[2.2 * inch, usable - 2.2 * inch - 2.2 * inch, 2.2 * inch])
@@ -612,11 +596,11 @@ def generate_pdf_report(client_name, annuity_name, current_value, new_value,
 
 @app.route("/")
 def index():
-    return render_template("index.html", products=ANNUITY_PRODUCTS)
+    return render_template("index.html", carriers=CARRIERS)
 
-@app.route("/api/products")
-def get_products():
-    return jsonify(ANNUITY_PRODUCTS)
+@app.route("/api/carriers")
+def get_carriers():
+    return jsonify(CARRIERS)
 
 @app.route("/api/index-return", methods=["POST"])
 def get_index_return():
@@ -672,20 +656,15 @@ def api_report():
 
 
 def open_browser():
-    """Open the browser after a short delay to let Flask start."""
     import time
     time.sleep(1.5)
     webbrowser.open("http://127.0.0.1:5050")
 
 
 if __name__ == "__main__":
-    # Detect if running as a PyInstaller bundle
     is_bundled = getattr(sys, "frozen", False)
-
     if is_bundled:
-        # Auto-open browser when running as packaged app
         threading.Thread(target=open_browser, daemon=True).start()
-        # Run without debug mode in production
         print("=" * 50)
         print("  EIA Track — Georgia Financial Advisors")
         print("  Opening in your browser...")
