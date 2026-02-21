@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EIA Track — Georgia Financial Advisors</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0a1628;
+            --navy-mid: #0f2240;
+            --navy-light: #1a3358;
+            --gold: #b8963e;
+            --gold-hover: #cdb06a;
+            --gold-pale: #f5f0e4;
+            --gold-faint: #faf6ed;
+            --bg: #f9f8f6;
+            --bg2: #f3f1ed;
+            --white: #ffffff;
+            --border: #e0dcd5;
+            --border-light: #eae7e1;
+            --text: #1c1c1c;
+            --text2: #555555;
+            --text3: #999999;
+            --text4: #b5afa5;
+            --green: #0d6938;
+            --green-bg: #e8f5ee;
+            --red: #a31515;
+            --red-bg: #fef2f2;
+            --radius: 6px;
+            --radius-lg: 10px;
+            --shadow: 0 1px 3px rgba(10,22,40,0.04), 0 1px 2px rgba(10,22,40,0.02);
+            --shadow-md: 0 4px 12px rgba(10,22,40,0.06);
+            --shadow-focus: 0 0 0 3px var(--gold-pale);
+            --transition: 150ms ease;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ── HEADER ─────────────────────────────────────── */
+        .masthead { background: var(--navy); border-bottom: 2.5px solid var(--gold); }
+        .masthead-inner {
+            max-width: 960px; margin: 0 auto; padding: 16px 28px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .masthead-left { display: flex; align-items: center; gap: 16px; }
+        .masthead img { height: 36px; border-radius: 3px; }
+        .masthead-brand { font-size: 16px; font-weight: 700; color: var(--white); letter-spacing: -0.3px; }
+        .masthead-sub {
+            font-size: 9px; font-weight: 500; color: var(--gold);
+            letter-spacing: 2px; text-transform: uppercase; margin-top: 1px;
+        }
+        .masthead-right { font-size: 11px; color: rgba(255,255,255,.35); font-weight: 400; }
+
+        /* ── LAYOUT ─────────────────────────────────────── */
+        .page { max-width: 960px; margin: 0 auto; padding: 28px 28px 80px; }
+
+        /* ── PANEL ──────────────────────────────────────── */
+        .panel {
+            background: var(--white); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 28px 32px;
+            margin-bottom: 20px; box-shadow: var(--shadow);
+        }
+        .panel-overline {
+            font-size: 9px; font-weight: 700; letter-spacing: 2.5px;
+            text-transform: uppercase; color: var(--gold); margin-bottom: 4px;
+        }
+        .panel-title {
+            font-size: 15px; font-weight: 700; color: var(--navy);
+            letter-spacing: -0.2px; margin-bottom: 16px;
+        }
+        .panel-desc {
+            font-size: 12px; color: var(--text3); line-height: 1.55;
+            margin-bottom: 16px; max-width: 640px;
+        }
+
+        /* ── FORM ───────────────────────────────────────── */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 16px; }
+        .field { display: flex; flex-direction: column; }
+        .field label {
+            font-size: 10px; font-weight: 700; color: var(--text3);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;
+        }
+        .field input, .field select {
+            padding: 10px 12px; border: 1px solid var(--border);
+            border-radius: var(--radius); font-size: 13px; font-family: 'Inter', sans-serif;
+            color: var(--text); background: var(--white);
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+        .field input:focus, .field select:focus {
+            outline: none; border-color: var(--gold); box-shadow: var(--shadow-focus);
+        }
+        .field input::placeholder { color: var(--text4); }
+        .field-hint { font-size: 10px; color: var(--text4); margin-top: 3px; line-height: 1.4; }
+        .field-hint.ok { color: var(--green); }
+        .field-hint.err { color: var(--red); }
+
+        /* ── BUTTONS ────────────────────────────────────── */
+        .btn {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 10px 22px; border: none; border-radius: var(--radius);
+            font-size: 12px; font-weight: 700; font-family: 'Inter', sans-serif;
+            cursor: pointer; transition: all var(--transition);
+            letter-spacing: 0.3px;
+        }
+        .btn-gold { background: var(--gold); color: var(--white); }
+        .btn-gold:hover { background: var(--gold-hover); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+        .btn-navy { background: var(--navy); color: var(--white); }
+        .btn-navy:hover { background: var(--navy-mid); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+        .btn-ghost { background: transparent; color: var(--navy); border: 1px solid var(--border); }
+        .btn-ghost:hover { border-color: var(--navy); background: var(--bg2); }
+        .btn-xs { padding: 5px 12px; font-size: 10px; font-weight: 600; color: var(--text3); border: 1px solid var(--border); background: transparent; }
+        .btn-xs:hover { color: var(--red); border-color: var(--red); background: var(--red-bg); }
+        .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+        .btn-row { display: flex; gap: 10px; margin-top: 16px; }
+
+        /* ── ALLOCATION BAR ─────────────────────────────── */
+        .alloc-meter {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 14px; background: var(--bg); border: 1px solid var(--border-light);
+            border-radius: var(--radius); margin-bottom: 16px;
+        }
+        .alloc-meter-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
+        .alloc-meter-bar { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+        .alloc-meter-fill { height: 100%; border-radius: 3px; transition: all .3s ease; }
+        .alloc-meter-fill.ok { background: var(--green); }
+        .alloc-meter-fill.over { background: var(--red); }
+        .alloc-meter-fill.under { background: var(--gold); }
+        .alloc-meter-pct { font-size: 15px; font-weight: 800; min-width: 48px; text-align: right; font-variant-numeric: tabular-nums; }
+
+        /* ── ALLOCATION CARD ────────────────────────────── */
+        .acard {
+            border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 18px 22px; margin-bottom: 12px; background: var(--white);
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+        .acard:hover { border-color: var(--gold); box-shadow: 0 2px 8px rgba(184,150,62,.08); }
+        .acard-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .acard-top h4 { font-size: 13px; font-weight: 700; color: var(--navy); }
+        .acard-top-right { display: flex; align-items: center; gap: 8px; }
+        .tag {
+            display: inline-block; padding: 2px 9px; border-radius: 20px;
+            font-size: 9px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
+        }
+        .tag-live { background: var(--green-bg); color: var(--green); }
+        .tag-manual { background: var(--gold-pale); color: var(--gold); }
+        .tag-fixed { background: var(--bg2); color: var(--text3); }
+        .strat-divider { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-light); }
+        .strat-label { font-size: 9px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .rate-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+        /* ── RESULTS ────────────────────────────────────── */
+        .metrics {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            border: 1px solid var(--border); border-radius: var(--radius-lg);
+            overflow: hidden; margin-bottom: 20px;
+        }
+        .metric {
+            padding: 22px 24px; background: var(--white);
+            border-right: 1px solid var(--border);
+        }
+        .metric:last-child { border-right: none; }
+        .metric-label {
+            font-size: 9px; font-weight: 700; color: var(--text3);
+            text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px;
+        }
+        .metric-val {
+            font-size: 26px; font-weight: 800; letter-spacing: -0.5px;
+            font-variant-numeric: tabular-nums; line-height: 1;
+        }
+        .metric-sub { font-size: 12px; font-weight: 600; margin-top: 6px; }
+        .c-navy { color: var(--navy); }
+        .c-green { color: var(--green); }
+        .c-red { color: var(--red); }
+
+        /* ── TABLE ──────────────────────────────────────── */
+        .tbl-wrap { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+        .tbl { width: 100%; border-collapse: collapse; }
+        .tbl thead th {
+            background: var(--bg2); border-bottom: 2px solid var(--gold);
+            padding: 9px 14px; font-size: 9px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: .8px; color: var(--text3); text-align: left;
+        }
+        .tbl thead th.r { text-align: right; }
+        .tbl tbody td {
+            padding: 11px 14px; font-size: 12px; border-bottom: 1px solid var(--border-light); vertical-align: middle;
+        }
+        .tbl tbody td.r { text-align: right; font-variant-numeric: tabular-nums; }
+        .tbl tbody td.b { font-weight: 700; }
+        .tbl tbody tr:last-child td {
+            border-top: 2px solid var(--navy); border-bottom: none;
+            background: var(--bg); font-weight: 800; font-size: 12px;
+        }
+        .strat-sub { display: block; font-size: 10px; color: var(--text3); font-weight: 400; margin-top: 2px; }
+
+        /* ── MISC ───────────────────────────────────────── */
+        .spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(255,255,255,.25); border-radius: 50%; border-top-color: currentColor; animation: spin .6s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeUp .35s ease-out both; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) {
+            .page { padding: 16px; }
+            .grid { grid-template-columns: 1fr; }
+            .metrics { grid-template-columns: 1fr; }
+            .metric { border-right: none; border-bottom: 1px solid var(--border); }
+            .metric:last-child { border-bottom: none; }
+            .rate-row { grid-template-columns: 1fr; }
+            .panel { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="masthead">
+    <div class="masthead-inner">
+        <div class="masthead-left">
+            <img src="/static/logo.jpg" alt="GFA" onerror="this.style.display='none'">
+            <div>
+                <div class="masthead-brand">EIA Track</div>
+                <div class="masthead-sub">Annuity Performance Tracker</div>
+            </div>
+        </div>
+        <div class="masthead-right" id="todayDate"></div>
+    </div>
+</header>
+
+<div class="page">
+
+    <!-- STEP 1 -->
+    <div class="panel">
+        <div class="panel-overline">Step 1</div>
+        <div class="panel-title">Client & Product Information</div>
+        <div class="grid">
+            <div class="field">
+                <label>Client Name</label>
+                <input type="text" id="clientName" placeholder="John & Jane Smith">
+            </div>
+            <div class="field">
+                <label>Annuity Product</label>
+                <select id="annuityProduct">
+                    <option value="">Select product...</option>
+                    {% for key, p in products.items() %}
+                    <option value="{{ key }}">{{ p.name }} &mdash; {{ p.carrier }}</option>
+                    {% endfor %}
+                    <option value="custom">Other / Custom</option>
+                </select>
+            </div>
+            <div class="field hidden" id="customNameWrap">
+                <label>Product Name</label>
+                <input type="text" id="customAnnuityName" placeholder="Enter product name">
+            </div>
+        </div>
+        <div class="grid">
+            <div class="field">
+                <label>Advisor Name</label>
+                <input type="text" id="advisorName" placeholder="Nick Mangino">
+            </div>
+            <div class="field">
+                <label>Advisor Title</label>
+                <input type="text" id="advisorTitle" placeholder="Vice President">
+            </div>
+        </div>
+        <div class="grid">
+            <div class="field">
+                <label>Current Account Value</label>
+                <input type="number" id="currentValue" placeholder="250000" step="0.01" min="0">
+            </div>
+            <div class="field">
+                <label>Policy Anniversary Date</label>
+                <input type="date" id="anniversaryDate">
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="panel">
+        <div class="panel-overline">Step 2</div>
+        <div class="panel-title">Index Allocations & Crediting Strategy</div>
+        <div class="panel-desc">
+            Configure each index allocation with its crediting parameters (spread, participation rate, cap).
+            S&P 500 returns are fetched live. Proprietary index returns must be entered manually from carrier statements.
+        </div>
+
+        <div class="alloc-meter">
+            <span class="alloc-meter-label">Allocated</span>
+            <div class="alloc-meter-bar"><div class="alloc-meter-fill under" id="meterFill" style="width:0%"></div></div>
+            <span class="alloc-meter-pct" id="meterPct">0%</span>
+        </div>
+
+        <div id="allocations"></div>
+
+        <div class="btn-row">
+            <button class="btn btn-navy" onclick="addAlloc('index')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Index
+            </button>
+            <button class="btn btn-ghost" onclick="addAlloc('fixed')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Fixed Rate
+            </button>
+        </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="panel">
+        <div class="panel-overline">Step 3</div>
+        <div class="panel-title">Calculate & Generate Report</div>
+        <div class="btn-row">
+            <button class="btn btn-gold" id="calcBtn" onclick="doCalc()">Calculate Updated Value</button>
+            <button class="btn btn-navy hidden" id="reportBtn" onclick="doReport()">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Download Client Report
+            </button>
+        </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="panel hidden" id="resultsPanel">
+        <div class="panel-overline">Results</div>
+        <div class="panel-title">Account Performance Summary</div>
+
+        <div class="metrics fade-in">
+            <div class="metric">
+                <div class="metric-label">Current Value</div>
+                <div class="metric-val c-navy" id="rvCurr">$0.00</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Estimated Updated Value</div>
+                <div class="metric-val c-navy" id="rvNew">$0.00</div>
+                <div class="metric-sub" id="rvGain"></div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Period Return</div>
+                <div class="metric-val" id="rvRet">0.00%</div>
+                <div class="metric-sub" style="color:var(--text3)">Since anniversary</div>
+            </div>
+        </div>
+
+        <div class="tbl-wrap fade-in">
+            <table class="tbl">
+                <thead><tr>
+                    <th>Index / Strategy</th>
+                    <th class="r">Weight</th>
+                    <th class="r">Index Return</th>
+                    <th class="r">Credited</th>
+                    <th class="r">Est. Value</th>
+                </tr></thead>
+                <tbody id="tblBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+const products = {{ products | tojson }};
+const live = { "sp500": { name: "S&P 500", ticker: "^GSPC" } };
+const allIdx = {
+    "sp500": "S&P 500", "ba10": "Balanced Asset 10 Index", "ba5": "Balanced Asset 5 Index",
+    "bts5": "Barclays Trailblazer Sectors 5", "brk_ma": "BlackRock Market Advantage Index",
+    "gs_global": "GS Global Factor Index", "ms_eq": "Morgan Stanley US Equity Allocator",
+    "bloom_versa10": "Bloomberg Versa 10", "barc_atlas5": "Barclays Atlas 5",
+    "sp500_raven": "S&P 500 RavenPack AI", "ndx_gen5": "NDX Generations 5",
+};
+
+let n = 0, lastRes = null;
+const $ = id => document.getElementById(id);
+const fmt = (v, d=2) => v.toLocaleString(undefined, {minimumFractionDigits: d, maximumFractionDigits: d});
+
+$('todayDate').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+$('annuityProduct').addEventListener('change', e => $('customNameWrap').classList.toggle('hidden', e.target.value !== 'custom'));
+
+function annuityName() {
+    const s = $('annuityProduct');
+    return s.value === 'custom' ? ($('customAnnuityName').value || 'Custom') : (s.options[s.selectedIndex]?.text || '');
+}
+
+function updateMeter() {
+    let t = 0;
+    document.querySelectorAll('.pct-in').forEach(el => t += parseFloat(el.value) || 0);
+    $('meterFill').style.width = Math.min(t, 100) + '%';
+    $('meterFill').className = 'alloc-meter-fill ' + (t === 100 ? 'ok' : t > 100 ? 'over' : 'under');
+    $('meterPct').textContent = t + '%';
+    $('meterPct').style.color = t === 100 ? 'var(--green)' : t > 100 ? 'var(--red)' : 'var(--gold)';
+}
+
+function addAlloc(type) {
+    n++;
+    const id = n, pk = $('annuityProduct').value, box = $('allocations');
+
+    if (type === 'fixed') {
+        box.insertAdjacentHTML('beforeend', `
+            <div class="acard fade-in" id="a${id}" data-t="fixed">
+                <div class="acard-top">
+                    <h4>Fixed Interest Rate</h4>
+                    <div class="acard-top-right"><span class="tag tag-fixed">Fixed</span><button class="btn btn-xs" onclick="rmAlloc(${id})">Remove</button></div>
+                </div>
+                <div class="grid">
+                    <div class="field"><label>Allocation %</label><input type="number" class="pct-in" id="pct${id}" placeholder="20" min="0" max="100" step="1" oninput="updateMeter()"></div>
+                    <div class="field"><label>Annual Fixed Rate (%)</label><input type="number" id="fix${id}" placeholder="3.75" step="0.01" min="0"></div>
+                </div>
+            </div>`);
+    } else {
+        let opts = '';
+        if (pk && pk !== 'custom' && products[pk]) {
+            products[pk].indexes.forEach(i => { opts += `<option value="${i.id}">${i.name} [${live[i.id] ? 'LIVE' : 'MANUAL'}]</option>`; });
+        } else {
+            Object.entries(allIdx).forEach(([k,v]) => { opts += `<option value="${k}">${v} [${live[k] ? 'LIVE' : 'MANUAL'}]</option>`; });
+        }
+        box.insertAdjacentHTML('beforeend', `
+            <div class="acard fade-in" id="a${id}" data-t="index">
+                <div class="acard-top">
+                    <h4>Index Allocation</h4>
+                    <div class="acard-top-right"><span class="tag" id="tag${id}">--</span><button class="btn btn-xs" onclick="rmAlloc(${id})">Remove</button></div>
+                </div>
+                <div class="grid">
+                    <div class="field"><label>Index</label><select id="sel${id}" onchange="idxChg(${id})"><option value="">Select index...</option>${opts}<option value="cust">Custom Index</option></select></div>
+                    <div class="field hidden" id="custWrap${id}"><label>Index Name</label><input type="text" id="custName${id}" placeholder="Index name"></div>
+                    <div class="field"><label>Allocation %</label><input type="number" class="pct-in" id="pct${id}" placeholder="50" min="0" max="100" step="1" oninput="updateMeter()"></div>
+                </div>
+                <div class="grid">
+                    <div class="field"><label>Index Return (%)</label><input type="number" id="ret${id}" placeholder="Enter or auto-fetched" step="0.01"><div class="field-hint" id="hint${id}"></div></div>
+                </div>
+                <div class="strat-divider">
+                    <div class="strat-label">Crediting Strategy</div>
+                    <div class="rate-row">
+                        <div class="field"><label>Spread (%)</label><input type="number" id="spr${id}" placeholder="5.50" step="0.01" min="0"><div class="field-hint">Deducted from gains first</div></div>
+                        <div class="field"><label>Participation Rate (%)</label><input type="number" id="par${id}" placeholder="150" step="1" min="0"></div>
+                        <div class="field"><label>Cap Rate (%)</label><input type="number" id="cap${id}" placeholder="10.25" step="0.01" min="0"></div>
+                    </div>
+                </div>
+            </div>`);
+    }
+    updateMeter();
+}
+
+function rmAlloc(id) { $('a' + id)?.remove(); updateMeter(); }
+
+function idxChg(id) {
+    const v = $('sel' + id).value, tag = $('tag' + id), inp = $('ret' + id), hint = $('hint' + id);
+    $('custWrap' + id).classList.toggle('hidden', v !== 'cust');
+
+    if (live[v]) {
+        tag.textContent = 'LIVE'; tag.className = 'tag tag-live';
+        const d = $('anniversaryDate').value;
+        if (!d) { hint.textContent = 'Set anniversary date above to auto-fetch, or enter manually.'; hint.className = 'field-hint'; return; }
+        hint.textContent = 'Fetching...'; hint.className = 'field-hint'; inp.disabled = true;
+        fetch('/api/index-return', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ ticker: live[v].ticker, start_date: d }) })
+        .then(r => r.json()).then(data => {
+            inp.disabled = false;
+            if (data.error) { hint.textContent = data.error + ' — enter manually.'; hint.className = 'field-hint err'; return; }
+            inp.value = data.index_return.toFixed(2);
+            hint.textContent = `${data.start_date} ($${fmt(data.start_price)}) to ${data.end_date} ($${fmt(data.end_price)})`;
+            hint.className = 'field-hint ok';
+        }).catch(() => { inp.disabled = false; hint.textContent = 'Network error — enter manually.'; hint.className = 'field-hint err'; });
+    } else if (v === 'cust') {
+        tag.textContent = 'CUSTOM'; tag.className = 'tag tag-manual';
+        hint.textContent = 'Enter the index return from your carrier data.'; hint.className = 'field-hint';
+    } else if (v) {
+        tag.textContent = 'MANUAL'; tag.className = 'tag tag-manual';
+        hint.textContent = 'Proprietary index — enter return from carrier statement.'; hint.className = 'field-hint';
+        inp.value = '';
+    }
+}
+
+$('anniversaryDate').addEventListener('change', () => {
+    document.querySelectorAll('.acard[data-t="index"]').forEach(c => {
+        const id = c.id.replace('a',''), s = $('sel' + id);
+        if (s && live[s.value]) idxChg(+id);
+    });
+});
+
+function gather() {
+    const out = [];
+    document.querySelectorAll('.acard').forEach(c => {
+        const id = c.id.replace('a','');
+        if (c.dataset.t === 'fixed') {
+            out.push({ name:'Fixed Interest', allocation_pct: parseFloat($('pct'+id)?.value)||0, fixed_rate: parseFloat($('fix'+id)?.value)||0, is_fixed: true });
+        } else {
+            const s = $('sel'+id);
+            let nm = s.value === 'cust' ? ($('custName'+id)?.value||'Custom Index') : (allIdx[s.value] || s.options[s.selectedIndex]?.text || 'Index');
+            const cv = $('cap'+id)?.value, pv = $('par'+id)?.value, sv = $('spr'+id)?.value;
+            out.push({ name: nm, allocation_pct: parseFloat($('pct'+id)?.value)||0, index_return: parseFloat($('ret'+id)?.value)||0,
+                cap_rate: cv ? +cv : null, par_rate: pv ? +pv : null, spread_rate: sv ? +sv : null, is_fixed: false });
+        }
+    });
+    return out;
+}
+
+function doCalc() {
+    const cv = parseFloat($('currentValue').value);
+    if (!cv || cv <= 0) { alert('Enter the current account value.'); return; }
+    const allocs = gather();
+    if (!allocs.length) { alert('Add at least one allocation.'); return; }
+    const tot = allocs.reduce((s,a) => s + a.allocation_pct, 0);
+    if (Math.abs(tot-100) > .01 && !confirm(`Total allocation is ${tot}%, not 100%. Continue?`)) return;
+
+    const btn = $('calcBtn');
+    btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Calculating...';
+
+    fetch('/api/calculate', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ current_value: cv, allocations: allocs }) })
+    .then(r => r.json()).then(data => {
+        if (data.error) { alert(data.error); return; }
+        lastRes = data; lastRes.annuity_name = annuityName(); lastRes.client_name = $('clientName').value || 'Client';
+        lastRes.advisor_name = $('advisorName').value || '';
+        lastRes.advisor_title = $('advisorTitle').value || '';
+
+        $('resultsPanel').classList.remove('hidden');
+        $('reportBtn').classList.remove('hidden');
+
+        $('rvCurr').textContent = '$' + fmt(data.current_value);
+        $('rvNew').textContent = '$' + fmt(data.new_value);
+
+        const g = data.new_value - data.current_value, gEl = $('rvGain');
+        gEl.textContent = (g>=0?'+':'') + '$' + fmt(Math.abs(g));
+        gEl.className = 'metric-sub ' + (g>=0?'c-green':'c-red');
+
+        const rEl = $('rvRet');
+        rEl.textContent = (data.total_return_pct>=0?'+':'') + data.total_return_pct.toFixed(2) + '%';
+        rEl.className = 'metric-val ' + (data.total_return_pct>=0?'c-green':'c-red');
+
+        const tb = $('tblBody'); tb.innerHTML = '';
+        data.allocations.forEach(a => {
+            let nm = a.name, dets = [];
+            if (a.is_fixed) dets.push(`Fixed: ${(a.fixed_rate||0).toFixed(2)}%`);
+            else { if (a.spread_rate) dets.push(`Spread ${a.spread_rate}%`); if (a.par_rate) dets.push(`Par ${a.par_rate}%`); if (a.cap_rate) dets.push(`Cap ${a.cap_rate}%`); }
+            if (dets.length) nm += `<span class="strat-sub">${dets.join(' &middot; ')}</span>`;
+            const ir = a.is_fixed ? '--' : `${(a.index_return||0)>=0?'+':''}${(a.index_return||0).toFixed(2)}%`;
+            const ic = a.is_fixed ? '' : ((a.index_return||0)>=0 ? 'color:var(--green)' : 'color:var(--red)');
+            const cc = a.credited_return>0 ? 'color:var(--green)' : (a.credited_return<0 ? 'color:var(--red)' : '');
+            tb.innerHTML += `<tr><td>${nm}</td><td class="r">${a.allocation_pct}%</td><td class="r" style="${ic}">${ir}</td><td class="r" style="${cc}">${a.credited_return>=0?'+':''}${a.credited_return.toFixed(2)}%</td><td class="r b">$${fmt(a.new_amount)}</td></tr>`;
+        });
+        const tc = data.total_return_pct>=0?'color:var(--green)':'color:var(--red)';
+        tb.innerHTML += `<tr><td>Total</td><td class="r">100%</td><td class="r"></td><td class="r" style="${tc}">${data.total_return_pct>=0?'+':''}${data.total_return_pct.toFixed(2)}%</td><td class="r">$${fmt(data.new_value)}</td></tr>`;
+
+        $('resultsPanel').scrollIntoView({ behavior:'smooth', block:'start' });
+    })
+    .catch(e => alert('Error: ' + e.message))
+    .finally(() => { btn.disabled = false; btn.innerHTML = 'Calculate Updated Value'; });
+}
+
+function doReport() {
+    if (!lastRes) return;
+    const btn = $('reportBtn');
+    btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Generating...';
+    const ad = $('anniversaryDate').value, id = ad ? `${ad} to present` : 'N/A';
+
+    fetch('/api/report', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
+        client_name: lastRes.client_name, annuity_name: lastRes.annuity_name,
+        current_value: lastRes.current_value, new_value: lastRes.new_value,
+        allocations: lastRes.allocations, index_date: id,
+        advisor_name: lastRes.advisor_name, advisor_title: lastRes.advisor_title,
+    })})
+    .then(r => { if (!r.ok) throw new Error('Failed'); return r.blob(); })
+    .then(blob => {
+        const u = URL.createObjectURL(blob), a = document.createElement('a');
+        a.href = u; a.download = `GFA_Annuity_Report_${lastRes.client_name.replace(/\s/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(u);
+    })
+    .catch(e => alert('Report error: ' + e.message))
+    .finally(() => {
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Download Client Report';
+    });
+}
+</script>
+</body>
+</html>

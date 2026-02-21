@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+
+# PyInstaller build artifacts
+build/
+dist/
+*.spec
+EIA Track.app
+EIA Track.zip
+
+# macOS
+.DS_Store
+
+# PDF illustrations (large carrier docs)
+*.pdf
+
+# IDE / editor
+.vscode/
+.idea/
+
+# Claude
+.claude/
